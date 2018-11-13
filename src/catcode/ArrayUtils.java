@@ -1,10 +1,23 @@
 package catcode;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ArrayUtils {
+    
+    static <T> String toString(T[] arr, String delimiter) {
+        return Arrays.stream(arr)
+                .map(Objects::toString)
+                .collect(Collectors.joining(delimiter));
+    }
+    
+    static  String toString(int[] arr, String delimiter) {
+        return Arrays.stream(arr)
+                .boxed()
+                .map(Objects::toString)
+                .collect(Collectors.joining(delimiter));
+    }
     
     static int[] toArray(Collection<Integer> col) {
         return col.stream()
@@ -13,7 +26,7 @@ public class ArrayUtils {
     }
     
     static List<Integer> toList(int[] arr) {
-        List<Integer> l= new ArrayList<>();
+        List<Integer> l = new ArrayList<>();
         for (int i : arr) {
             l.add(i);
         }
@@ -43,6 +56,28 @@ public class ArrayUtils {
     static int[] invert(int[] arr) {
         int rows = arr.length;
         int[] slice = new int[rows];
+        int j = 0;
+        for (int i = arr.length - 1; i > -1; i--) {
+            slice[j++] = arr[i];
+        }
+        return slice;
+    }
+    
+    static <T> T[] concatenate(T[] a, T[] b) {
+        int aLen = a.length;
+        int bLen = b.length;
+        
+        @SuppressWarnings("unchecked")
+        T[] c = (T[]) Array.newInstance(a.getClass().getComponentType(), aLen + bLen);
+        System.arraycopy(a, 0, c, 0, aLen);
+        System.arraycopy(b, 0, c, aLen, bLen);
+        
+        return c;
+    }
+    
+    static Integer[] invert(Integer[] arr) {
+        int rows = arr.length;
+        Integer[] slice = new Integer[rows];
         int j = 0;
         for (int i = arr.length - 1; i > -1; i--) {
             slice[j++] = arr[i];
