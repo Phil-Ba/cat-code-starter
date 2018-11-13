@@ -1,5 +1,6 @@
 package catcode;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -43,6 +44,28 @@ public class ArrayUtils {
     static int[] invert(int[] arr) {
         int rows = arr.length;
         int[] slice = new int[rows];
+        int j = 0;
+        for (int i = arr.length - 1; i > -1; i--) {
+            slice[j++] = arr[i];
+        }
+        return slice;
+    }
+    
+    static <T> T[] concatenate(T[] a, T[] b) {
+        int aLen = a.length;
+        int bLen = b.length;
+        
+        @SuppressWarnings("unchecked")
+        T[] c = (T[]) Array.newInstance(a.getClass().getComponentType(), aLen + bLen);
+        System.arraycopy(a, 0, c, 0, aLen);
+        System.arraycopy(b, 0, c, aLen, bLen);
+        
+        return c;
+    }
+    
+    static Integer[] invert(Integer[] arr) {
+        int rows = arr.length;
+        Integer[] slice = new Integer[rows];
         int j = 0;
         for (int i = arr.length - 1; i > -1; i--) {
             slice[j++] = arr[i];
