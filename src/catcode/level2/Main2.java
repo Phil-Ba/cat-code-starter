@@ -10,7 +10,15 @@ import java.util.stream.Collectors;
 public class Main2 {
 
     public static void main(String[] args) {
-        Inputparser parser = new Inputparser("level2/level2_1.in");
+//        solve("level2/level2_0.in",);
+        solve("level2/level2_1.in", true);
+        solve("level2/level2_1.in", false);
+//        solve("level2/level2_5.in");
+//        solve("level2/level2_6.in");
+    }
+
+    private static void solve(String file, boolean brk) {
+        Inputparser parser = new Inputparser(file);
         int segmente = parser.scanLine().nextInt();
         int amountCars = parser.scanLine().nextInt();
         List<Scanner> carLines = parser.scanLines(amountCars, ",");
@@ -37,12 +45,6 @@ public class Main2 {
                 }
             }
 
-            //save current postions
-
-//            occupiedPostions = activeCars.stream()
-//                    .map(car -> car.currentPosition)
-//                    .collect(Collectors.toList());
-
             for (Car car : new ArrayList<>(activeCars)) {
                 boolean blocked = occupiedPostions.contains(car.currentPosition + 1);
                 switch (car.state) {
@@ -53,26 +55,55 @@ public class Main2 {
                         car.state = Car.CarState.Driving;
                         break;
                     case Driving:
-                        previousPositions.add(car.currentPosition);
                         //check if finished
                         if (car.isFinished()) {
                             car.finishTime = currentTick;
-                            car.state = Car.CarState.Leaving;
-                            break;
+                            car.state = Car.CarState.HasLeft;
+//                            car.state = Car.CarState.Leaving;
+                            activeCars.remove(car);
+                            if (brk) {
+                                break;
+                            }
                         } else if (!blocked) {
                             car.move();
                         }
+                        previousPositions.add(car.currentPosition);
                         break;
                     case Leaving:
-                        previousPositions.add(car.currentPosition);
-                        car.state = Car.CarState.HasLeft;
-                        activeCars.remove(car);
+//                        previousPositions.add(car.currentPosition);
+//                        car.state = Car.CarState.HasLeft;
+//                        activeCars.remove(car);
                         break;
                     case HasLeft:
                         //no longer in previous positions
                         break;
                 }
             }
+            String out = "";
+            for (int i = 0; i < segmente; i++) {
+                int finalI = i;
+                int finalCurrentTick = currentTick;
+                out += cars.stream()
+                        .filter(car -> car.currentPosition == finalI + 1)
+                        .findFirst()
+                        .map(car -> {
+                            switch (car.state) {
+                                case Waiting:
+                                    return null;
+                                case Entering:
+                                    return "E";
+                                case Driving:
+                                    return "D";
+                                case Leaving:
+                                    return "L";
+                                case HasLeft:
+                                    return car.finishTime == finalCurrentTick ? "L" : null;
+                                default:
+                                    return null;
+                            }
+                        }).orElse("-");
+            }
+            System.out.println(out);
             occupiedPostions = previousPositions;
             currentTick++;
         }
