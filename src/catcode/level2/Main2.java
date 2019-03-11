@@ -8,7 +8,7 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Main2 {
-
+    
     public static void main(String[] args) {
 //        solve("level2/level2_0.in",);
         solve("level2/level2_1.in", true);
@@ -16,7 +16,7 @@ public class Main2 {
 //        solve("level2/level2_5.in");
 //        solve("level2/level2_6.in");
     }
-
+    
     private static void solve(String file, boolean brk) {
         Inputparser parser = new Inputparser(file);
         int segmente = parser.scanLine().nextInt();
@@ -25,12 +25,12 @@ public class Main2 {
         List<Car> cars = carLines.stream()
                 .map(s -> new Car(s.nextInt(), s.nextInt(), s.nextInt()))
                 .collect(Collectors.toList());
-
+        
         ArrayList<Car> oricars = new ArrayList<>(cars);
         ArrayList<Car> activeCars = new ArrayList<>();
-
+        
         List<Integer> occupiedPostions = new ArrayList<>();
-
+        
         int currentTick = 1;
         while (oricars.stream().allMatch(car -> car.state == Car.CarState.HasLeft) == false) {
             ArrayList<Integer> previousPositions = new ArrayList<>();
@@ -44,7 +44,7 @@ public class Main2 {
                     activeCars.add(oricar);
                 }
             }
-
+            
             for (Car car : new ArrayList<>(activeCars)) {
                 boolean blocked = occupiedPostions.contains(car.currentPosition + 1);
                 switch (car.state) {
@@ -70,22 +70,32 @@ public class Main2 {
                         previousPositions.add(car.currentPosition);
                         break;
                     case Leaving:
+                        throw new IllegalStateException();
 //                        previousPositions.add(car.currentPosition);
 //                        car.state = Car.CarState.HasLeft;
 //                        activeCars.remove(car);
-                        break;
+//                        break;
                     case HasLeft:
-                        //no longer in previous positions
                         break;
                 }
             }
+//            boolean b = new StreamUtils().countBy(cars.stream(), t -> t.currentPosition)
+//                    .values()
+//                    .stream()
+//                    .anyMatch(c -> c > 1);
+//            if (b) {
+//                throw new IllegalStateException();
+//            }
+            
             String out = "";
             for (int i = 0; i < segmente; i++) {
-                int finalI = i;
+                int currentSegment = i;
                 int finalCurrentTick = currentTick;
-                out += cars.stream()
-                        .filter(car -> car.currentPosition == finalI + 1)
-                        .findFirst()
+                out += oricars.stream()
+                        .filter(car -> car.state != Car.CarState.Waiting)
+                        .filter(car -> (car.state == Car.CarState.HasLeft && car.finishTime == finalCurrentTick) || car.state != Car.CarState.HasLeft)
+                        .filter(car -> car.currentPosition == currentSegment + 1)
+                        .findAny()
                         .map(car -> {
                             switch (car.state) {
                                 case Waiting:
@@ -93,13 +103,13 @@ public class Main2 {
                                 case Entering:
                                     return "E";
                                 case Driving:
-                                    return "D";
+                                    return car.currentPosition == car.start ? "E" : "D";
                                 case Leaving:
                                     return "L";
                                 case HasLeft:
                                     return car.finishTime == finalCurrentTick ? "L" : null;
                                 default:
-                                    return null;
+                                    throw new IllegalStateException();
                             }
                         }).orElse("-");
             }
@@ -111,5 +121,5 @@ public class Main2 {
                 map(car -> car.finishTime + "").
                 collect(Collectors.joining(",")));
     }
-
+    
 }
