@@ -1,0 +1,53 @@
+10
+Gabrielle 346
+Terry 478
+Foreman 219
+Phillips 151
+Caitlin 118
+Shaffer 432
+Trujillo 35
+Holman 335
+Lynne 419
+Kasey 177
+41
+Kasey Foreman 35 1506997759
+Terry Trujillo 34 1507001222
+Caitlin Phillips 32 1507014580
+Kasey Shaffer 40 1507023896
+Caitlin Trujillo 48 1507030155
+Shaffer Phillips 35 1507043379
+Phillips Kasey 36 1507056675
+Trujillo Gabrielle 17 1507068897
+Kasey Foreman 48 1507105996
+Shaffer Trujillo 38 1507126199
+Kasey Shaffer 32 1507146419
+Terry Shaffer 41 1507149164
+Kasey Shaffer 21 1507149312
+Phillips Terry 42 1507162028
+Terry Caitlin 46 1507164818
+Lynne Caitlin 49 1507168891
+Shaffer Phillips 46 1507172664
+Lynne Terry 21 1507174181
+Holman Kasey 39 1507177673
+Holman Lynne 26 1507183327
+Terry Caitlin 23 1507193305
+Phillips Holman 45 1507195987
+Terry Lynne 37 1507213247
+Terry Trujillo 29 1507221315
+Terry Gabrielle 44 1507256152
+Holman Kasey 48 1507256853
+Foreman Gabrielle 21 1507258053
+Foreman Lynne 35 1507268302
+Gabrielle Trujillo 43 1507279786
+Caitlin Lynne 31 1507294438
+Terry Holman 19 1507333766
+Kasey Holman 28 1507336569
+Kasey Gabrielle 28 1507341386
+Kasey Phillips 11 1507342386
+Trujillo Terry 18 1507359302
+Caitlin Lynne 22 1507359697
+Gabrielle Phillips 14 1507370950
+Gabrielle Phillips 11 1507371099
+Terry Foreman 40 1507372199
+Lynne Gabrielle 43 1507389397
+Terry Lynne 46 1507393424
