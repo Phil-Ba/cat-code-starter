@@ -12,11 +12,12 @@ public class MainLevel1 {
     
     public static void main(String[] args) {
         Scanner scanner = IOUtils.scanFile("level1/");
-        solve();
+        solve(scanner);
     }
     
-    static void solve() {
-    
+    static void solve(Scanner scanner) {
+        Invader invader = new Invader(scanner.nextInt(), scanner.nextInt());
+//        scanner.nextLine()
     }
     
 }
