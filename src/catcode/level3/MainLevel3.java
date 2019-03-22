@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class MainLevel3 {
 
     public static void main(String[] args) {
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 1; i++) {
             Scanner scanner = IOUtils.scanFile("level3/level3_" + i + ".in");
             solve(scanner, i);
         }
@@ -49,8 +49,8 @@ public class MainLevel3 {
             int invaderID = qScanner.nextInt();
             Invader invader = invadersById.get(invaderID);
             //TODO check <=
-            for (int j = 1; j <= amountTicks; j++) {
-                if (j < invader.spawnTime) {
+            for (int j = 0; j <= amountTicks; j++) {
+                if (j <= invader.spawnTime) {
                     continue;
                 }
                 executeMove(invader, commandsScanner);

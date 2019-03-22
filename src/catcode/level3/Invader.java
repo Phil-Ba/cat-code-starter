@@ -53,7 +53,7 @@ public class Invader {
     }
 
     void move(int times) {
-        for (int i = 0; i < times; i++) {
+//        for (int i = 0; i < times; i++) {
             switch (direction) {
                 case North:
                     y -= speed;
@@ -73,7 +73,7 @@ public class Invader {
                     break;
             }
             postitions.add(x + " " + y);
-        }
+//        }
     }
 
 
