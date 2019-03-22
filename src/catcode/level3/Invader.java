@@ -5,7 +5,10 @@ import java.util.List;
 
 public class Invader {
 
-    static enum Direction {
+    final int xOri;
+    final int yOri;
+
+    public static enum Direction {
         North, East, South, West;
     }
 
@@ -22,6 +25,8 @@ public class Invader {
     public Invader(int x, int y, int maxX, int maxY, double speed, int spawnTime, int id) {
         this.x = x;
         this.y = y;
+        this.xOri = x;
+        this.yOri = y;
         this.maxX = maxX;
         this.maxY = maxY;
         this.spawnTime = spawnTime;
@@ -30,50 +35,33 @@ public class Invader {
         postitions.add(x + " " + y);
     }
 
-    void turn(int times) {
-        for (int i = 0; i < times; i++) {
-            switch (direction) {
-                case North:
-                    direction = Direction.East;
-                    break;
-                case East:
-                    direction = Direction.South;
-                    break;
-                case South:
-                    direction = Direction.West;
-                    break;
-                case West:
-                    direction = Direction.North;
-                    break;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        }
-
+    void reset() {
+        x = xOri;
+        y = yOri;
+        postitions.clear();
+        postitions.add(x + " " + y);
     }
 
-    void move(int times) {
-//        for (int i = 0; i < times; i++) {
-            switch (direction) {
-                case North:
-                    y -= speed;
-                    y = Math.max(0, y);
-                    break;
-                case East:
-                    x += speed;
-                    x = Math.min(maxX, x);
-                    break;
-                case South:
-                    y += speed;
-                    y = Math.min(maxY, y);
-                    break;
-                case West:
-                    x -= speed;
-                    x = Math.max(0, x);
-                    break;
-            }
-            postitions.add(x + " " + y);
-//        }
+    void move(Direction direction) {
+        switch (direction) {
+            case North:
+                y -= 1;
+                y = Math.max(0, y);
+                break;
+            case East:
+                x += 1;
+                x = Math.min(maxX, x);
+                break;
+            case South:
+                y += 1;
+                y = Math.min(maxY, y);
+                break;
+            case West:
+                x -= 1;
+                x = Math.max(0, x);
+                break;
+        }
+        postitions.add(x + " " + y);
     }
 
 

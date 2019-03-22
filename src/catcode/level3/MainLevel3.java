@@ -1,6 +1,7 @@
 package catcode.level3;
 
 import catcode.IOUtils;
+import catcode.level3.Invader.Direction;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 public class MainLevel3 {
 
     public static void main(String[] args) {
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 5; i++) {
             Scanner scanner = IOUtils.scanFile("level3/level3_" + i + ".in");
             solve(scanner, i);
         }
@@ -42,40 +43,82 @@ public class MainLevel3 {
         for (int j = 0; j < queriesAmount; j++) {
             queries.add(scanner.nextLine());
         }
+        Scanner commandsScanner = new Scanner(commands);
+        List<Direction> moves = parseCommands(commandsScanner);
         List<String> results = queries.stream().map(q -> {
             Scanner qScanner = new Scanner(q);
-            Scanner commandsScanner = new Scanner(commands);
-            int amountTicks = qScanner.nextInt();
+            int queryTicks = qScanner.nextInt();
             int invaderID = qScanner.nextInt();
+            //TODO
             Invader invader = invadersById.get(invaderID);
-            //TODO check <=
-            for (int j = 0; j <= amountTicks; j++) {
-                if (j <= invader.spawnTime) {
-                    continue;
-                }
-                executeMove(invader, commandsScanner);
+            int amountTicks = queryTicks - invader.spawnTime;
+            int amountMoves = (int) (Math.floor(amountTicks * speed));
+
+//            for (int j = 0; j < amountTicks; j++) {
+//                if (j <= invader.spawnTime) {
+//                    continue;
+//                }
+//                if (moves.isEmpty() == false) {
+//                    invader.move(moves.remove(0));
+//                }
+//            }
+
+            List<Direction> subMoves = moves.subList(0, Math.min(amountMoves, moves.size()));
+            for (Direction subMove : subMoves) {
+                invader.move(subMove);
             }
-            return amountTicks + " " + invaderID + " " + ((int) (Math.floor(invader.x))) + " " + ((int) Math.floor(invader.y));
+            String result = queryTicks + " " + invaderID + " " + ((int) (Math.floor(invader.x))) + " " + ((int) Math.floor(invader.y));
+            invader.reset();
+            return result;
         }).collect(Collectors.toList());
 
         IOUtils.write("level3/level3_" + i + ".out", results);
     }
 
-    static void executeMove(Invader invader, Scanner commands) {
-        while (commands.hasNext()) {
-            String command = commands.next();
-            int times = commands.nextInt();
+    private static List<Direction> parseCommands(Scanner commandsScanner) {
+        List<Direction> moves = new ArrayList<>();
+        Direction direction = Direction.East;
+        while (commandsScanner.hasNext()) {
+            String command = commandsScanner.next();
+            int times = commandsScanner.nextInt();
             switch (command) {
                 case "T":
-                    invader.turn(times);
+                    direction = turn(direction, times);
                     break;
                 case "F":
-                    invader.move(times);
-                    return;
+                    for (int i = 0; i < times; i++) {
+                        moves.add(direction);
+                    }
+                    break;
                 default:
                     throw new IllegalArgumentException();
             }
         }
+        return moves;
     }
+
+    static Direction turn(Direction current, int times) {
+        Direction temp = current;
+        for (int i = 0; i < times; i++) {
+            switch (temp) {
+                case North:
+                    temp = Direction.East;
+                    break;
+                case East:
+                    temp = Direction.South;
+                    break;
+                case South:
+                    temp = Direction.West;
+                    break;
+                case West:
+                    temp = Direction.North;
+                    break;
+                default:
+                    throw new IllegalArgumentException();
+            }
+        }
+        return temp;
+    }
+
 
 }
