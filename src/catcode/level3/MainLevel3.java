@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class MainLevel3 {
 
     public static void main(String[] args) {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             Scanner scanner = IOUtils.scanFile("level3/level3_" + i + ".in");
             solve(scanner, i);
         }
@@ -43,9 +43,9 @@ public class MainLevel3 {
         for (int j = 0; j < queriesAmount; j++) {
             queries.add(scanner.nextLine());
         }
-        Scanner commandsScanner = new Scanner(commands);
-        List<Direction> moves = parseCommands(commandsScanner);
         List<String> results = queries.stream().map(q -> {
+            Scanner commandsScanner = new Scanner(commands);
+            List<Direction> moves = parseCommands(commandsScanner);
             Scanner qScanner = new Scanner(q);
             int queryTicks = qScanner.nextInt();
             int invaderID = qScanner.nextInt();
@@ -54,19 +54,22 @@ public class MainLevel3 {
             int amountTicks = queryTicks - invader.spawnTime;
             int amountMoves = (int) (Math.floor(amountTicks * speed));
 
-//            for (int j = 0; j < amountTicks; j++) {
+            for (int j = 0; j < amountMoves; j++) {
 //                if (j <= invader.spawnTime) {
 //                    continue;
 //                }
-//                if (moves.isEmpty() == false) {
-//                    invader.move(moves.remove(0));
-//                }
-//            }
-
-            List<Direction> subMoves = moves.subList(0, Math.min(amountMoves, moves.size()));
-            for (Direction subMove : subMoves) {
-                invader.move(subMove);
+                if (moves.isEmpty() == false) {
+                    boolean legal = invader.move(moves.remove(0));
+                    if (legal == false) {
+                        j--;
+                    }
+                }
             }
+
+//            List<Direction> subMoves = moves.subList(0, Math.min(amountMoves, moves.size()));
+//            for (Direction subMove : subMoves) {
+//                invader.move(subMove);
+//            }
             String result = queryTicks + " " + invaderID + " " + ((int) (Math.floor(invader.x))) + " " + ((int) Math.floor(invader.y));
             invader.reset();
             return result;

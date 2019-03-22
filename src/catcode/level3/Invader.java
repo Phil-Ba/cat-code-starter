@@ -42,26 +42,35 @@ public class Invader {
         postitions.add(x + " " + y);
     }
 
-    void move(Direction direction) {
+    boolean move(Direction direction) {
         switch (direction) {
             case North:
+                if (y == 0) {
+                    return false;
+                }
                 y -= 1;
-                y = Math.max(0, y);
                 break;
             case East:
+                if (x == maxX - 1) {
+                    return false;
+                }
                 x += 1;
-                x = Math.min(maxX, x);
                 break;
             case South:
+                if (y == maxY - 1) {
+                    return false;
+                }
                 y += 1;
-                y = Math.min(maxY, y);
                 break;
             case West:
+                if (x == 0) {
+                    return false;
+                }
                 x -= 1;
-                x = Math.max(0, x);
                 break;
         }
         postitions.add(x + " " + y);
+        return true;
     }
 
 
