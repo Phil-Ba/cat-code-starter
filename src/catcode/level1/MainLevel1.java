@@ -28,6 +28,8 @@ public class MainLevel1 {
                 case "F":
                     invader.move(times);
                     break;
+                default:
+                    throw new IllegalArgumentException();
             }
         }
         IOUtils.write("level1/level1_" + i + ".out",invader.x + " " + invader.y);

@@ -29,6 +29,8 @@ public class Invader {
                 case West:
                     direction=Direction.North;
                     break;
+                default:
+                    throw new IllegalArgumentException();
             }
         }
 
@@ -38,6 +40,7 @@ public class Invader {
         switch (direction){
             case North:
                 y -= times;
+                y = Math.max(0, y);
                 break;
             case East:
                 x += times;
@@ -47,6 +50,7 @@ public class Invader {
                 break;
             case West:
                 x -= times;
+                x = Math.max(0, x);
                 break;
         }
     }
